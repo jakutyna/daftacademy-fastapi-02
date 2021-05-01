@@ -1,15 +1,18 @@
 from datetime import date
 
-from fastapi import FastAPI, Request
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 
-app = FastAPI()
-templates = Jinja2Templates(directory='templates')
+from ..dependencies import templates
+
+router = APIRouter(
+    prefix="/hello",
+    tags=["hello"],
+)
 
 
 # Ex1
-@app.get('/hello', response_class=HTMLResponse)
+@router.get('/', response_class=HTMLResponse)
 def hello_view():
     return f"""
         <html>
@@ -24,7 +27,7 @@ def hello_view():
 
 
 # Ex1 with templates
-@app.get('/hello2', response_class=HTMLResponse)
+@router.get('/hello2', response_class=HTMLResponse)
 def hello2_view(request: Request):
     current_date = str(date.today())
     return templates.TemplateResponse("hello2.html", {"request": request, "current_date": current_date})
