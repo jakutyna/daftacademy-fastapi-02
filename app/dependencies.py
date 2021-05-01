@@ -5,6 +5,7 @@ from hashlib import sha256
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.responses import JSONResponse, HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory='app/templates')
@@ -16,8 +17,19 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     correct_password = secrets.compare_digest(credentials.password, 'NotSoSecurePa$$')
     if not (correct_username and correct_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not Authorized')
+    return credentials.username, credentials.password
 
 
 def random_token():
     token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
     return sha256(token.encode()).hexdigest()
+
+
+def response_json_html(query_params):
+    if 'format' in query_params:
+        response_format = query_params['format']
+        if response_format == 'json':
+            return JSONResponse(content={'message': 'Welcome!'})
+        elif response_format == 'html':
+            return HTMLResponse(content='<h1>Welcome!</h1>')
+    return PlainTextResponse(content='Welcome!')
