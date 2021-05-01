@@ -5,8 +5,6 @@ from fastapi import APIRouter, Depends, Response
 from ..dependencies import authenticate, random_token
 
 router = APIRouter(
-    prefix='/login',
-    tags=['login'],
     dependencies=[Depends(authenticate)]
 )
 
