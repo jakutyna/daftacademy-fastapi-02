@@ -6,8 +6,8 @@ from fastapi.responses import HTMLResponse
 from ..dependencies import templates
 
 router = APIRouter(
-    prefix="/hello",
-    tags=["hello"],
+    prefix='/hello',
+    tags=['hello'],
 )
 
 
