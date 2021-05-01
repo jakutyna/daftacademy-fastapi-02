@@ -1,6 +1,6 @@
 from hashlib import sha256
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, status, Response
 
 from ..dependencies import authenticate, random_token
 
@@ -12,7 +12,7 @@ router.session_token = None
 router.login_token = None
 
 
-@router.post('/login_session')
+@router.post('/login_session', status_code=status.HTTP_201_CREATED)
 def login_session_view(response: Response):
     session_token = random_token()
     router.session_token = session_token
@@ -20,7 +20,7 @@ def login_session_view(response: Response):
     return {'message': 'You are logged'}
 
 
-@router.post('/login_token')
+@router.post('/login_token', status_code=status.HTTP_201_CREATED)
 def login_session_view(response: Response):
     login_token = random_token()
     router.login_token = login_token
