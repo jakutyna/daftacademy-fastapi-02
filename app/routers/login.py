@@ -9,9 +9,9 @@ router = APIRouter(
     tags=['login'],
 )
 
-# Tokens cached on server
-router.session_token = None
-router.login_token = None
+# # Tokens cached on server
+# router.session_token = None
+# router.login_token = None
 
 
 # Ex2
@@ -25,22 +25,28 @@ def login_session_view(response: Response):
 
 @router.post('/login_token', status_code=status.HTTP_201_CREATED, dependencies=[Depends(authenticate)])
 def login_session_view():
-    login_token = random_token()
-    router.login_token = login_token
-    return {'message': 'You are logged', "token": login_token}
+    json_token = random_token()
+    router.json_token = json_token
+    return {'message': 'You are logged', "token": json_token}
 
 
 # Ex3
 @router.get('/welcome_session')
 def welcome_session_view(request: Request, session_token: Optional[str] = Cookie(None)):
-    if session_token != router.session_token or session_token is None:
+    try:
+        if session_token != router.session_token:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not Authorized')
+    except AttributeError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not Authorized')
     return response_json_html(request.query_params)
 
 
 @router.get('/welcome_token')
 def welcome_token_view(request: Request, token: Optional[str] = Query(None)):
-    if token != router.login_token or token is None:
+    try:
+        if token != router.json_token:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not Authorized')
+    except AttributeError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not Authorized')
     return response_json_html(request.query_params)
 
