@@ -33,3 +33,13 @@ def response_json_html(query_params):
         elif response_format == 'html':
             return HTMLResponse(content='<h1>Welcome!</h1>')
     return PlainTextResponse(content='Welcome!')
+
+
+def logout_json_html(query_params):
+    if 'format' in query_params:
+        response_format = query_params['format']
+        if response_format == 'json':
+            return JSONResponse(content={'message': 'Logged out!'})
+        elif response_format == 'html':
+            return HTMLResponse(content='<h1>Logged out!</h1>')
+    return PlainTextResponse(content='Logged out!')
