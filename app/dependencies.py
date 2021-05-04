@@ -39,8 +39,8 @@ def verify_token(tokens_cache, token):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid token')
 
 
-def random_token():
-    token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+def random_token(token):
+    # token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
     return sha256(token.encode()).hexdigest()
 
 
