@@ -20,7 +20,7 @@ def login_session_view(response: Response):
     """ Verifies credentials and generates random session token kept in cookie. """
     session_token = random_token('session')
     router.session_tokens.append(session_token)
-    if len(router.session_tokens) > 3:
+    if len(router.session_tokens) > 1:
         del router.session_tokens[0]
     response.set_cookie(key='session_token', value=session_token)
     return {'message': 'You are logged'}
@@ -31,7 +31,7 @@ def login_session_view():
     """ Verifies credentials and generates random session token kept in json file. """
     json_token = random_token('json')
     router.json_tokens.append(json_token)
-    if len(router.json_tokens) > 3:
+    if len(router.json_tokens) > 1:
         del router.json_tokens[0]
     return {'message': 'You are logged', "token": json_token}
 
