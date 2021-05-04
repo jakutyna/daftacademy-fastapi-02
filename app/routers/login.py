@@ -68,8 +68,7 @@ def logout_token_view(request: Request, token: Optional[str] = Query(None)):
 
 @router.get('/logged_out')
 def logout_session_view(request: Request):
-    return {'session_cache': router.session_tokens, 'json_cache': router.json_tokens}
-    # return logout_json_html(request.query_params)
+    return logout_json_html(request.query_params)
 
 
 # View for testing authorization and 'Depends' method
